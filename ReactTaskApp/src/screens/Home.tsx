@@ -14,15 +14,10 @@ import {
 import MessageContainer from '../components/MessageContainer';
  import {usePostsQuery} from '../services/postsApi';
  import {PostModal} from '../data-modals/post.modal'
-// import {AddPost} from './src/components/addPost';
-// import DeleteItem from './src/components/deletePost';
-// import {PAGE_LENGTH} from './src/constants'
-// import { PostModal } from './src/models/post.model';
 
-function Home(): JSX.Element {
-  //   const [currentPage, setCurrentPage] = React.useState<number>(PAGE_LENGTH);
-  //   const [showAdd, setShowAdd] = React.useState<Boolean>(true);
-  const [postList, setPostList] = React.useState<PostModal[] | null>(null);
+
+function Home({route,navigation}): JSX.Element {
+   const [postList, setPostList] = React.useState<PostModal[] | null>(null);
      const {data, refetch: refetchData, isLoading} = usePostsQuery();
 
      React.useEffect(()=>{
@@ -32,7 +27,7 @@ function Home(): JSX.Element {
   const ItemSeparator = () => <View style={styles.separatorStyle} />;
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+   
       <View style={{flex: 1, backgroundColor: 'black'}}>
         <View style={{flexDirection: 'row', marginTop: 23, marginLeft: 17}}>
           <Image
@@ -43,7 +38,6 @@ function Home(): JSX.Element {
           <Text
             style={{
               color: 'white',
-             // backgroundColor: 'red',
               flex: 1,
               textAlign: 'center',
             }}
@@ -55,14 +49,7 @@ function Home(): JSX.Element {
         style={{marginVertical:36}}
         source={require('../assets/line.png')}
       />
-        {/* <View>
-          <MessageContainer
-            userName="Alice Martha"
-            caption="test"
-            tags="tag1"
-            isVerified={true}
-          />
-        </View> */}
+     
       
        <FlatList
               data={postList}
@@ -76,47 +63,14 @@ function Home(): JSX.Element {
               )}
               keyExtractor={item => item.id.toString()}
               ItemSeparatorComponent={ItemSeparator}
-            //  onEndReached={fetchMore}
-            // onEndReachedThreshold ={.5}
             />
+             <TouchableWithoutFeedback onPress={()=>{navigation.navigate('AddMessage')}} accessible={false}>
               <Image
         style={{position:'absolute',bottom:16,right:16}}
         source={require('../assets/plus-sign.png')}
       />
-        {/* {isLoading && (
-        <ActivityIndicator
-          size="large"
-          color="#240E6C"
-          style={styles.spinnerStyle}
-        />
-      )} 
-        {!showAdd && <AddPost setShowAdd={setShowAdd} />}
-        {showAdd && data && (
-          <>
-            <Text style={styles.headerStyle}>RTK Query</Text>
-            {showAdd && (
-              <View style={styles.buttonContainer}>
-                <Button
-                  onPress={() => setShowAdd(!showAdd)}
-                  title={showAdd ? 'Add New Item' : 'Submit'}
-                  color="#240E6C"
-                />
-              </View>
-            )}
-            <FlatList
-              data={postList}
-              renderItem={({item}) => (
-                <DeleteItem title={item.title} userId={item.userId} />
-              )}
-              keyExtractor={item => item.id.toString()}
-              ItemSeparatorComponent={ItemSeparator}
-              onEndReached={fetchMore}
-             onEndReachedThreshold ={.5}
-            />
-          </>
-        )} */}
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+            </View>
   );
 }
 

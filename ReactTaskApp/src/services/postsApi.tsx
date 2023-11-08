@@ -11,8 +11,7 @@ export const postsApi = createApi({
     posts: builder.query({
       query: () => {
         return {
-          url:`posts`,
-          //?_sort=createdAt&_order=desc
+          url:`posts?_sort=createdAt&_order=desc`,
           method: 'GET',
         };
       },

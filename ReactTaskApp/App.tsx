@@ -9,30 +9,20 @@ import React,{useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import type {PropsWithChildren} from 'react';
 import Home from './src/screens/Home';
+import AddMessage from './src/screens/AddMessage'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+   StyleSheet,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import AddMessage from './src/screens/AddMessage';
+
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-
+const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
   
@@ -41,10 +31,14 @@ function App(): JSX.Element {
   }, []);
 
   return (
-  <>
-  <Home/>
-         {/* <AddMessage/> */}
-    </>
+    <NavigationContainer>
+       <Stack.Navigator  screenOptions={{
+    headerShown: false
+  }}>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="AddMessage" component={AddMessage} />
+      </Stack.Navigator>
+        </NavigationContainer>
   );
 }
 
