@@ -1,6 +1,7 @@
 package com.reacttaskapp;
-
+import android.os.Bundle; 
 import com.facebook.react.ReactActivity;
+import org.devio.rn.splashscreen.SplashScreen; 
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
@@ -15,6 +16,11 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "ReactTaskApp";
   }
+   @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.show(this);  // Add this here
+        super.onCreate(savedInstanceState);
+    }
 
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link
