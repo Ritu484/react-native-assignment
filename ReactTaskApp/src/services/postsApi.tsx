@@ -19,7 +19,7 @@ export const postsApi = createApi({
 		addPost: builder.mutation({
 			query: (body: PostModal) => {
 				return {
-					url: `posts1`,
+					url: `posts`,
 					method: "POST",
 					body
 				};

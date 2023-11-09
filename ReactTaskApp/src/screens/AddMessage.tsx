@@ -38,6 +38,7 @@ function AddMessage({ navigation }): JSX.Element {
 			await addPost(post).unwrap();
 		} catch (e) {
 			alert("Could not perform this action");
+			console.log(e)
 		}
 		navigation.push("Home");
 	};
