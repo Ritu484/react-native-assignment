@@ -33,7 +33,10 @@ function AddMessage({navigation}): JSX.Element {
             source={require('../assets/back-arrow.png')}
           />
           </TouchableWithoutFeedback>
-           <TouchableWithoutFeedback onPress={async()=>{ let post = {
+           <TouchableWithoutFeedback onPress={async()=>{ 
+             if(!caption.length)
+             return;
+             let post = {
               userName: "Test User",
         caption,
         tags,
