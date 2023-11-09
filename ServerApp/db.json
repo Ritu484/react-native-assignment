@@ -320,14 +320,6 @@
       "id": "QWHIida",
       "createdAt": "2023-08-22T12:20:00Z",
       "comments": []
-    },
-    {
-      "userName": "Test User",
-      "caption": "Test3",
-      "tags": ["tag1\n", "tag2"],
-      "id": 14,
-      "createdAt": "Thu Nov 09 2023",
-      "comments": []
     }
-  ]
+     ]
 }
