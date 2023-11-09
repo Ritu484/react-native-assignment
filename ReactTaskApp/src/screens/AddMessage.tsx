@@ -38,7 +38,7 @@ function AddMessage({ navigation }): JSX.Element {
 			await addPost(post).unwrap();
 		} catch (e) {
 			alert("Could not perform this action");
-			console.log(e)
+			console.log(e);
 		}
 		navigation.push("Home");
 	};
@@ -84,7 +84,10 @@ function AddMessage({ navigation }): JSX.Element {
 							onFocus={() => {
 								setShowAdd(true);
 							}}
-							onChangeText={text => setTag(text)}
+							onChangeText={text => {
+								!text.length ? setShowAdd(false) : setShowAdd(true);
+								setTag(text);
+							}}
 							value={tag}
 							placeholder='Write tags'
 						/>
@@ -93,6 +96,7 @@ function AddMessage({ navigation }): JSX.Element {
 						onPress={() => {
 							tag?.length ? setTags([...tags, tag]) : null;
 							setTag("");
+							setShowAdd(false);
 						}}
 					>
 						<View style={{ flexDirection: "column", flex: 2 }}>
