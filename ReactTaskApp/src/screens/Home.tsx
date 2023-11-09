@@ -24,34 +24,38 @@ function Home({route,navigation}): JSX.Element {
       setPostList(data?.body)
     },[data])
 
-  const ItemSeparator = () => <View style={styles.separatorStyle} />;
+  const ItemSeparator = () =>   <Image
+  style={{marginVertical: 36}}
+  source={require('../assets/line.png')}
+/>;
 
   return (
    
       <View style={{flex: 1, backgroundColor: 'black'}}>
         <View style={{flexDirection: 'row', marginTop: 23, marginLeft: 17}}>
           <Image
-            //style={styles.image}
             source={require('../assets/profile-pic.png')}
           />
 
           <Text
             style={{
               color: 'white',
-              flex: 1,
-              textAlign: 'center',
+             flex: 1,
+              marginLeft: '30%',
+              textAlignVertical:'center',
+            fontFamily:'Inter-Bold',
+              fontSize:20,
+              lineHeight:24
             }}
           >
-            hey
+            Chirpz
           </Text>
         </View>
         <Image
         style={{marginVertical:36}}
         source={require('../assets/line.png')}
       />
-     
-      
-       <FlatList
+      <FlatList
               data={postList}
               renderItem={({item}) => (
                 <MessageContainer

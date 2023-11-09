@@ -27,23 +27,34 @@ function AddMessage({navigation}): JSX.Element {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={{flex: 1, backgroundColor: 'black', paddingLeft: 17}}>
         <View style={{flexDirection: 'row', marginTop: 23}}>
+        <TouchableWithoutFeedback onPress={()=>navigation.goBack()} accessible={false}>
           <Image
             //style={styles.image}
             source={require('../assets/back-arrow.png')}
           />
+          </TouchableWithoutFeedback>
            <TouchableWithoutFeedback onPress={async()=>{ let post = {
+              userName: "Test User",
         caption,
         tags,
         id:data.body.length+1,
-      };;await addPost(post).unwrap();navigation.navigate('Home')}} >
+        createdAt:new Date().toDateString(),
+        comments:[]
+      };
+      await addPost(post).unwrap();navigation.navigate('Home')}} >
           <View style={{flex: 1, alignItems: 'flex-end'}}>
             <Text
               style={{
                 color: 'white',
                 backgroundColor: '#E88607',
+                height:34,
                 width: 80,
                 borderRadius: 30,
                 textAlign: 'center',
+                fontFamily:'Inter-Bold',
+                fontSize:16,
+                textAlignVertical:'center'
+
               }}
             >
               Post
@@ -53,9 +64,8 @@ function AddMessage({navigation}): JSX.Element {
         </View>
         <Text
           style={{
-            fontFamily: 'inter',
+            fontFamily: 'Inter-Bold',
             color: 'white',
-            fontWeight: 700,
             fontSize: 15,
             lineHeight: 18,
             marginTop: 64,
@@ -65,8 +75,7 @@ function AddMessage({navigation}): JSX.Element {
         </Text>
         <TextInput
           style={{color: 'white'}}
-          placeholderTextColor="white"
-         
+          placeholderTextColor="#3F4B63"
           onChangeText={(text) => {
             setCaption(text);
           }}
@@ -75,9 +84,8 @@ function AddMessage({navigation}): JSX.Element {
         />
         <Text
           style={{
-            fontFamily: 'inter',
+            fontFamily: 'Inter-Bold',
             color: 'white',
-            fontWeight: 700,
             fontSize: 15,
             lineHeight: 18,
             marginTop: 64,
@@ -89,7 +97,7 @@ function AddMessage({navigation}): JSX.Element {
           <View style={{flexDirection: 'column', flex: 8}}>
             <TextInput
               style={{color: 'white', flexWrap: 'wrap'}}
-              placeholderTextColor="white"
+              placeholderTextColor="#3F4B63"
               multiline={true}
               onFocus={() => {
                 setShowAdd(true);
