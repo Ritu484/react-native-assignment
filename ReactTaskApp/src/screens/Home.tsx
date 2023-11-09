@@ -1,52 +1,48 @@
 import * as React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
-  Button,
   FlatList,
   View,
-  ActivityIndicator,
   TouchableWithoutFeedback,
-  Keyboard,
   Image,
+  ActivityIndicator
 } from 'react-native';
 import MessageContainer from '../components/MessageContainer';
  import {usePostsQuery} from '../services/postsApi';
  import {PostModal} from '../data-modals/post.modal'
 
 
-function Home({route,navigation}): JSX.Element {
+function Home({navigation}): JSX.Element {
    const [postList, setPostList] = React.useState<PostModal[] | null>(null);
-     const {data, refetch: refetchData, isLoading} = usePostsQuery();
+  const {data,isLoading} = usePostsQuery();
 
      React.useEffect(()=>{
       setPostList(data?.body)
     },[data])
 
-  const ItemSeparator = () =>   <Image
+  const ItemSeparator = () =><Image
   style={{marginVertical: 36}}
   source={require('../assets/line.png')}
 />;
 
+  if (isLoading)
+    return (
+      <ActivityIndicator
+        size="large"
+        color="#240E6C"
+        style={styles.spinnerStyle}
+      />
+    )
+
   return (
-   
-      <View style={{flex: 1, backgroundColor: 'black'}}>
-        <View style={{flexDirection: 'row', marginTop: 23, marginLeft: 17}}>
+   <View style={{flex: 1, backgroundColor: 'black'}}>
+        <View style={styles.headerView}>
           <Image
             source={require('../assets/profile-pic.png')}
           />
-
-          <Text
-            style={{
-              color: 'white',
-             flex: 1,
-              marginLeft: '30%',
-              textAlignVertical:'center',
-            fontFamily:'Inter-Bold',
-              fontSize:20,
-              lineHeight:24
-            }}
+        <Text
+            style={styles.headerStyle}
           >
             Chirpz
           </Text>
@@ -68,9 +64,9 @@ function Home({route,navigation}): JSX.Element {
               keyExtractor={item => item.id.toString()}
               ItemSeparatorComponent={ItemSeparator}
             />
-             <TouchableWithoutFeedback onPress={()=>{navigation.navigate('AddMessage')}} accessible={false}>
+             <TouchableWithoutFeedback onPress={()=>{navigation.push('AddMessage')}}>
               <Image
-        style={{position:'absolute',bottom:16,right:16}}
+        style={styles.bottomActionStyle}
         source={require('../assets/plus-sign.png')}
       />
       </TouchableWithoutFeedback>
@@ -81,24 +77,24 @@ function Home({route,navigation}): JSX.Element {
 export default Home;
 
 const styles = StyleSheet.create({
-  headerStyle: {
-    fontSize: 40,
-    color: 'black',
-    lineHeight: 50,
-    textAlign: 'center',
-    paddingTop: 50,
+  headerStyle:{
+    color: 'white',
+   flex: 1,
+    marginLeft: '30%',
+    textAlignVertical:'center',
+  fontFamily:'Inter-Bold',
+    fontSize:20,
+    lineHeight:24
   },
-  buttonContainer: {
-    width: 150,
-    alignSelf: 'center',
-    marginBottom: 20,
-    paddingTop: 20,
+  headerView:{
+    flexDirection: 'row', 
+    marginTop: 23, 
+    marginLeft: 17
   },
-  separatorStyle: {
-    height: 2,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    marginLeft: 10,
-    marginRight: 10,
+  bottomActionStyle:{
+    position:'absolute',
+    bottom:16,
+    right:16
   },
   spinnerStyle: {
     position: 'absolute',
@@ -109,4 +105,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  
 });

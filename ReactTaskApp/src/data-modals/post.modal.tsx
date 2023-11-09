@@ -3,6 +3,7 @@ export  interface PostModal {
     id:number,
     userName: string,
     caption: string,
-    tags: string[]  
+    tags: string[] ,
+    createdAt:string 
 }
 

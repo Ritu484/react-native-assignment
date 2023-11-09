@@ -3,7 +3,6 @@ import {PostModal} from '../models/post.model';
 import {BASE_URL} from '../constants';
 
 export const postsApi = createApi({
-  
   reducerPath: 'postsApi',
   baseQuery: fetchBaseQuery({baseUrl: BASE_URL}),
   tagTypes: ['Post'],
@@ -11,7 +10,7 @@ export const postsApi = createApi({
     posts: builder.query({
       query: () => {
         return {
-          url:`posts?_sort=createdAt&_order=desc`,
+          url: `posts?_sort=createdAt&_order=desc`,
           method: 'GET',
         };
       },
@@ -27,20 +26,10 @@ export const postsApi = createApi({
       },
       invalidatesTags: ['Post'],
     }),
-    deletePost: builder.mutation({
-      query: (id: number) => {
-        return {
-          url: `posts/${id}`,
-          method: 'DELETE',
-        };
-      },
-      invalidatesTags: ['Post'],
-    }),
-  }),
+     }),
 });
 
 export const {
   usePostsQuery,
   useAddPostMutation,
-  useDeletePostMutation,
 } = postsApi;

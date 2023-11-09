@@ -1,16 +1,13 @@
 import * as React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
-  Button,
-  FlatList,
-  View,
-  ActivityIndicator,
+   View,
   TouchableWithoutFeedback,
   Keyboard,
   Image,
   TextInput,
+  ActivityIndicator
 } from 'react-native';
 import {useAddPostMutation,usePostsQuery} from '../services/postsApi'
 
@@ -20,59 +17,55 @@ function AddMessage({navigation}): JSX.Element {
   const [caption, setCaption] = React.useState<String>('');
   const [tags, setTags] = React.useState<String[]>([]);
   const [tag, setTag] = React.useState<String>('');
-
+  const [isLoading, setIsLoading] = React.useState<Boolean>(false);
   const [addPost] = useAddPostMutation();
-  const {data, refetch: refetchData, isLoading} = usePostsQuery();
+  const {data} = usePostsQuery();
+  
+  const handleAddPost= async()=>{ 
+     if(!caption.length)
+    return;
+    setIsLoading(true)
+    let post = {
+     userName: "Test User",
+      caption,
+      tags,
+      id:data.body.length+1,
+      createdAt:new Date().toDateString(),
+      comments:[]
+};
+await addPost(post).unwrap();
+navigation.push('Home')
+}
+
+if(isLoading)
   return (
+      <ActivityIndicator
+        size="large"
+        color="#240E6C"
+        style={styles.spinnerStyle}
+      />
+     )
+  return (
+    
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{flex: 1, backgroundColor: 'black', paddingLeft: 17}}>
+      <View style={styles.addMessageContainer}>
         <View style={{flexDirection: 'row', marginTop: 23}}>
-        <TouchableWithoutFeedback onPress={()=>navigation.goBack()} accessible={false}>
+        <TouchableWithoutFeedback onPress={()=>navigation.goBack()}>
           <Image
-            //style={styles.image}
             source={require('../assets/back-arrow.png')}
           />
           </TouchableWithoutFeedback>
-           <TouchableWithoutFeedback onPress={async()=>{ 
-             if(!caption.length)
-             return;
-             let post = {
-              userName: "Test User",
-        caption,
-        tags,
-        id:data.body.length+1,
-        createdAt:new Date().toDateString(),
-        comments:[]
-      };
-      await addPost(post).unwrap();navigation.navigate('Home')}} >
+           <TouchableWithoutFeedback onPress={handleAddPost} >
           <View style={{flex: 1, alignItems: 'flex-end'}}>
             <Text
-              style={{
-                color: 'white',
-                backgroundColor: '#E88607',
-                height:34,
-                width: 80,
-                borderRadius: 30,
-                textAlign: 'center',
-                fontFamily:'Inter-Bold',
-                fontSize:16,
-                textAlignVertical:'center'
-
-              }}
-            >
+              style={styles.postActionStyle}>
               Post
             </Text>
-          </View>
+          </View> 
           </TouchableWithoutFeedback>
         </View>
         <Text
-          style={{
-            fontFamily: 'Inter-Bold',
-            color: 'white',
-            fontSize: 15,
-            lineHeight: 18,
-            marginTop: 64,
-          }}
+          style={styles.createActionStyle}
         >
           Create
         </Text>
@@ -86,13 +79,7 @@ function AddMessage({navigation}): JSX.Element {
           placeholder="What’s on your mind?"
         />
         <Text
-          style={{
-            fontFamily: 'Inter-Bold',
-            color: 'white',
-            fontSize: 15,
-            lineHeight: 18,
-            marginTop: 64,
-          }}
+          style={styles.addTagActionStyle}
         >
           Add Tags
         </Text>
@@ -113,23 +100,15 @@ function AddMessage({navigation}): JSX.Element {
           <TouchableWithoutFeedback onPress={()=>{tag?.length?setTags([...tags,tag]):null;setTag('')}} >
           <View style={{flexDirection: 'column', flex: 2}}>
           {showAdd? <Text
-              style={{
-                flex: 1,
-                textAlign: 'right',
-                color: 'white',
-                textAlignVertical: 'center',
-              }}
-            >
+              style={styles.addActionStyle}>
               ADD
             </Text>:null}
-           
-          </View>
+              </View>
           </TouchableWithoutFeedback>
         </View>
         <View style={{flexDirection:'row'}}>
   {tags?.map((item,i)=>
- <Text key={i} style={{color:'white',backgroundColor:'#28395A',height:36,width:'auto',borderRadius:5,paddingHorizontal:7,marginTop:48,marginRight:10,paddingVertical:7
- ,alignSelf:'flex-start'}}>{item}</Text>)
+ <Text key={i} style={styles.tagItemStyle}>{item}</Text>)
   }
   </View>
         <Image
@@ -137,6 +116,7 @@ function AddMessage({navigation}): JSX.Element {
           source={require('../assets/line.png')}
         />
       </View>
+    
     </TouchableWithoutFeedback>
   );
 }
@@ -144,25 +124,53 @@ function AddMessage({navigation}): JSX.Element {
 export default AddMessage;
 
 const styles = StyleSheet.create({
-  headerStyle: {
-    fontSize: 40,
-    color: 'black',
-    lineHeight: 50,
-    textAlign: 'center',
-    paddingTop: 50,
-  },
-  buttonContainer: {
-    width: 150,
-    alignSelf: 'center',
-    marginBottom: 20,
-    paddingTop: 20,
-  },
-  separatorStyle: {
-    height: 2,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    marginLeft: 10,
-    marginRight: 10,
-  },
+postActionStyle: {
+  color: 'white',
+  backgroundColor: '#E88607',
+  height:34,
+  width: 80,
+  borderRadius: 30,
+  textAlign: 'center',
+  fontFamily:'Inter-Bold',
+  fontSize:16,
+  textAlignVertical:'center'
+ },
+ createActionStyle:{
+  fontFamily: 'Inter-Bold',
+  color: 'white',
+  fontSize: 15,
+  lineHeight: 18,
+  marginTop: 64,
+},
+addTagActionStyle:{
+  fontFamily: 'Inter-Bold',
+  color: 'white',
+  fontSize: 15,
+  lineHeight: 18,
+  marginTop: 64,
+},
+addActionStyle:{
+  flex: 1,
+  textAlign: 'right',
+  color: 'white',
+  textAlignVertical: 'center',
+},
+tagItemStyle:{
+  color:'white',
+  backgroundColor:'#28395A',
+  height:36,width:'auto',
+  borderRadius:5,
+  paddingHorizontal:7,
+  marginTop:48,
+  marginRight:10,
+  paddingVertical:7,
+alignSelf:'flex-start'
+},
+addMessageContainer:{
+  flex: 1, 
+  backgroundColor: 'black', 
+  paddingLeft: 17
+},
   spinnerStyle: {
     position: 'absolute',
     left: 0,
@@ -172,4 +180,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
 });
