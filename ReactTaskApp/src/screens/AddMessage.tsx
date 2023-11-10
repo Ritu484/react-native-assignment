@@ -31,7 +31,7 @@ function AddMessage({ navigation }): JSX.Element {
 			caption,
 			tags,
 			id: data.body.length + 1,
-			createdAt: new Date().toDateString(),
+			createdAt: new Date(),
 			comments: []
 		};
 		try {
